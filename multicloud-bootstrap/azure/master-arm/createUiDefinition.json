@@ -27,7 +27,6 @@
                     ],
                     "required": true
                 },
-                "options": {},
                 "visible": true
             },
             {
@@ -35,9 +34,19 @@
                 "type": "Microsoft.Common.TextBox",
                 "label": "Public domain",
                 "defaultValue": "",
-                "toolTip": "Public hosted zone to use. e.g. mas4aws.myorg.com (Applicable only if a new OCP cluster is being created)",
-                "constraints": {},
-                "options": {
+                "toolTip": "Public hosted zone to use. e.g. mydomain.myorg.com (Applicable only if a new OCP cluster is being created)",
+                "constraints": {
+                    "required": true
+                },
+                "visible": true
+            },
+            {
+                "name": "publicDomainResourceGroup",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Public domain resource group",
+                "defaultValue": "",
+                "toolTip": "Provide the name of the resource group where public App Service domain is created (Applicable only if a new OCP cluster is being created)",
+                "constraints": {
                     "required": true
                 },
                 "visible": true
@@ -48,8 +57,7 @@
                 "label": "Bootnode NSG Ingress CIDR IP range",
                 "defaultValue": "",
                 "toolTip": "Please set CIDR to x.x.x.x/32 to allow one specific IP address access, 0.0.0.0/0 to allow all IP addresses access, or another CIDR range to access Bootnode over SSH.",
-                "constraints": {},
-                "options": {
+                "constraints": {
                     "required": true
                 },
                 "visible": true
@@ -58,7 +66,7 @@
                 "name": "clusterSize",
                 "type": "Microsoft.Common.DropDown",
                 "label": "Cluster size",
-                "defaultValue": "MAS Core + CP4D",
+                "defaultValue": "small",
                 "toolTip": "OCP cluster size. (small-3M,3W,3S medium-3M,5W,3S large-5M,7W,3S) (M-m5.2xlarge W-m5.4xlarge S-m5.4xlarge)",
                 "constraints": {
                     "allowedValues": [
@@ -74,10 +82,37 @@
                             "label": "large",
                             "value": "large"
                         }
-                    ],
-                    "required": true
+                    ]                
                 },
-                "options": {},
+                "visible": true
+            },
+            {
+                "name": "openshiftClusterApiUrl",
+                "type": "Microsoft.Common.TextBox",
+                "label": "OpenShift cluster API URL",
+                "defaultValue": "",
+                "toolTip": "Existing OCP cluster URL in the format https://api.[clustername].[domain]. Do not specify port number, 6443 will be used. e.g. https://api.masocp-joalae.mydomain.myorg.com",
+                "visible": true
+            },
+            {
+                "name": "openShiftUser",
+                "type": "Microsoft.Common.TextBox",
+                "label": "OpenShift user",
+                "defaultValue": "",
+                "toolTip": "Username to access existing OCP cluster.",
+                "visible": true
+            },
+            {
+                "name": "openShiftPassword",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                    "password": "Openshift password",
+                    "confirmPassword": "Confirm Openshift password"
+                },
+                "toolTip": "Password to access existing OCP cluster.",
+                "options": {
+                    "hideConfirmation": true
+                },
                 "visible": true
             },
             {
@@ -85,22 +120,22 @@
                 "type": "Microsoft.Common.TextBox",
                 "label": "Entitled registry key",
                 "defaultValue": "",
-                "toolTip": "Entitled registry key.",
-                "constraints": {},
-                "options": {
-                    "required": true
-                },
+                "toolTip": "Entitled registry key",
                 "visible": true
             },
             {
                 "name": "openShiftPullSecret",
-                "type": "Microsoft.Common.TextBox",
-                "label": "OpenShift pull secret",
-                "defaultValue": "",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                    "password": "OpenShift pull secret",
+                    "confirmPassword": "Confirm OpenShift pull secret"
+                },
                 "toolTip": "OpenShift Pull secret to download operator images. JSON string can be pasted as is.",
-                "constraints": {},
-                "options": {
+                "constraints": {
                     "required": true
+                },
+                "options": {
+                    "hideConfirmation": true
                 },
                 "visible": true
             },
@@ -110,8 +145,7 @@
                 "label": "MAS license URL",
                 "defaultValue": "",
                 "toolTip": "Blob SAS Url URL of MAS license file. e.g. https://masocpstgaccount.blob.core.windows.net/masocpcontainer/entitlement.lic?<blob-sas-token> (Applicable only for BYOL product)",
-                "constraints": {},
-                "options": {
+                "constraints": {
                     "required": true
                 },
                 "visible": true
@@ -122,21 +156,18 @@
                 "label": "MAS Manage DB user",
                 "defaultValue": "",
                 "toolTip": "User name for the database to be configured with MAS Manage app. (Applicable only if OfferingType is 'MAS Core + Manage') e.g. db2inst1",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
                 "name": "masManageDBPassword",
-                "type": "Microsoft.Common.TextBox",
-                "label": "MAS Manage DB password",
-                "defaultValue": "",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                    "password": "MAS manage DB password",
+                    "confirmPassword": "Confirm MAS manage DB password"
+                },
                 "toolTip": "Password for the database to be configured with MAS Manage app. (Applicable only if OfferingType is 'MAS Core + Manage')",
-                "constraints": {},
                 "options": {
-                    "required": false
+                    "hideConfirmation": true
                 },
                 "visible": true
             },
@@ -146,10 +177,6 @@
                 "label": "MAS Manage DB JDBC URL",
                 "defaultValue": "",
                 "toolTip": "JDBC URL for the database to be configured with MAS Manage app. (Applicable only if OfferingType is 'MAS Core + Manage') e.g. jdbc:db2://1.2.3.4:50051/FTMDB:sslConnection=true;",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
@@ -158,10 +185,6 @@
                 "label": "MAS Manage DB certificate URL",
                 "defaultValue": "",
                 "toolTip": "HTTP or S3 URL of database public certificate file. (Applicable only if OfferingType is 'MAS Core + Manage') e.g. s3://masocp-license/db-certificate.crt",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
@@ -180,10 +203,8 @@
                             "label": "false",
                             "value": "false"
                         }
-                    ],
-                    "required": false
+                    ]               
                 },
-                "options": {},
                 "visible": true
             },
             {
@@ -192,8 +213,7 @@
                 "label": "SSH public key",
                 "defaultValue": "",
                 "toolTip": "Specifies the SSH rsa public key file as a string. Use \"ssh-keygen -t rsa -b 2048\" to generate your SSH key pairs.",
-                "constraints": {},
-                "options": {
+                "constraints": {
                     "required": true
                 },
                 "visible": true
@@ -204,10 +224,6 @@
                 "label": "SLS endpoint URL",
                 "defaultValue": "",
                 "toolTip": "SLS endpoint URL. Must be accessible to the deployment. It can be retrieved from the OCP route named 'sls-*' in the namespace where SLS is deployed.",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
@@ -216,10 +232,6 @@
                 "label": "SLS registration key",
                 "defaultValue": "",
                 "toolTip": "SLS registration key, normally available as a key 'status.registrationKey' in 'License Service' instance YAML in the SLS deployed namespace.",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
@@ -228,10 +240,6 @@
                 "label": "SLS public certificate URL",
                 "defaultValue": "",
                 "toolTip": "Blob SAS Url URL of SLS public certificate file. e.g. https://masocpstgaccount.blob.core.windows.net/masocpcontainer/sls.crt?<blob-sas-token>",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
@@ -240,10 +248,6 @@
                 "label": "BAS endpoint URL",
                 "defaultValue": "",
                 "toolTip": "BAS endpoint URL. Must be accessible to the deployment. It can be retrieved from the OCP route named 'bas-endpoint' in the namespace where BAS is deployed.",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
@@ -252,10 +256,6 @@
                 "label": "BAS API key",
                 "defaultValue": "",
                 "toolTip": "BAS API key, normally available in OCP secret 'bas-api-key' in the BAS deployed namespace.",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
@@ -264,45 +264,95 @@
                 "label": "BAS public certificate URL",
                 "defaultValue": "",
                 "toolTip": "Blob SAS Url URL of BAS public certificate file. e.g. https://masocpstgaccount.blob.core.windows.net/masocpcontainer/bas.crt?<blob-sas-token>",
-                "constraints": {},
-                "options": {
-                    "required": false
-                },
                 "visible": true
             },
             {
-                "name": "openshiftClusterApiUrl",
+                "name": "azureSubscriptionId",
                 "type": "Microsoft.Common.TextBox",
-                "label": "OpenShift cluster API URL",
+                "label": "Azure subscription Id",
                 "defaultValue": "",
-                "toolTip": "Existing OCP cluster URL in the format https://api.[clustername].[domain]. Do not specify port number, 6443 will be used. e.g. https://api.masocp-joalae.mas4aws.com",
-                "constraints": {},
-                "options": {
+                "toolTip": "Azure subscription Id.",
+                "constraints": {
                     "required": true
                 },
                 "visible": true
             },
             {
-                "name": "openShiftUser",
+                "name": "azureTenantId",
                 "type": "Microsoft.Common.TextBox",
-                "label": "OpenShift user",
+                "label": "Azure tenant Id",
                 "defaultValue": "",
-                "toolTip": "Username to access existing OCP cluster.",
-                "constraints": {},
-                "options": {
+                "toolTip": "Azure tenant Id.",
+                "constraints": {
                     "required": true
                 },
                 "visible": true
             },
             {
-                "name": "openShiftPassword",
+                "name": "azureServicePrincipalClientId",
                 "type": "Microsoft.Common.TextBox",
-                "label": "OpenShift password",
+                "label": "Azure service principal client Id",
                 "defaultValue": "",
-                "toolTip": "Password to access existing OCP cluster.",
-                "constraints": {},
-                "options": {
+                "toolTip": "Azure service principal client Id.",
+                "constraints": {
                     "required": true
+                },
+                "visible": true
+            },
+            {
+                "name": "azureServicePrincipalClientSecret",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                    "password": "Azure service principal client secret",
+                    "confirmPassword": "Confirm Azure service principal client secret"
+                },
+                "toolTip": "Azure service principal client secret.",
+                "constraints": {
+                    "required": true
+                },
+                "options": {
+                    "hideConfirmation": true
+                },
+                "visible": true
+            },
+            {
+                "name": "notificattionEmailAddress",
+                "type": "Microsoft.Common.TextBox",
+                "label": "Notification Email Address",
+                "defaultValue": "",
+                "toolTip": "Email address to send email to. If empty, no email will be sent.",
+                "visible": true
+            },
+            {
+                "name": "sendGridAPIKey",
+                "type": "Microsoft.Common.PasswordBox",
+                "label": {
+                    "password": "Sendgrid API key",
+                    "confirmPassword": "Confirm Sendgrid API key"
+                },
+                "toolTip": "SendGrid API key for sending the deployment completion email. If empty, no email will be sent.",
+                "options": {
+                    "hideConfirmation": true
+                },
+                "visible": true
+            },
+            {
+                "name": "emailNotification",
+                "type": "Microsoft.Common.DropDown",
+                "label": "Email Notification",
+                "defaultValue": "false",
+                "toolTip": "Indicate whether you want to receive emails that contain the connection details and credentials for the Suite.",
+                "constraints": {
+                    "allowedValues": [
+                        {
+                            "label": "true",
+                            "value": "true"
+                        },
+                        {
+                            "label": "false",
+                            "value": "false"
+                        }
+                    ]                
                 },
                 "visible": true
             }
