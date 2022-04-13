@@ -125,18 +125,10 @@
             },
             {
                 "name": "openShiftPullSecret",
-                "type": "Microsoft.Common.PasswordBox",
-                "label": {
-                    "password": "OpenShift pull secret",
-                    "confirmPassword": "Confirm OpenShift pull secret"
-                },
-                "toolTip": "OpenShift Pull secret to download operator images. JSON string can be pasted as is.",
-                "constraints": {
-                    "required": true
-                },
-                "options": {
-                    "hideConfirmation": true
-                },
+                "type": "Microsoft.Common.TextBox",
+                "label": "OpenShift pull secret",
+                "defaultValue": "",
+                "toolTip": "OpenShift pull secret",
                 "visible": true
             },
             {
